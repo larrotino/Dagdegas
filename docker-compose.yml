@@ -1,10 +1,11 @@
 services:
-  dagdegas:
+  app:
     build: .
     container_name: dagdegas-app
     ports:
-      - "10001:3000"
-    restart: always
+      - "3000:3000"
     environment:
       - NODE_ENV=production
-      # Aggiungi qui eventuali variabili d'ambiente necessarie
+    volumes:
+      - ./services.json:/app/services.json
+    restart: always
