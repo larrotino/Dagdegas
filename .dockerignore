@@ -1,4 +1,8 @@
 node_modules
-.next
+dist
 .git
-.env.local
+.env
+*.log
+Dockerfile
+docker-compose.yml
+.dockerignore
