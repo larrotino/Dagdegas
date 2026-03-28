@@ -28,7 +28,9 @@ export default function App() {
         if (data && data.length > 0) {
           setTariffs(data);
         } else {
+          // If server returns empty, save initial tariffs to server
           setTariffs(INITIAL_TARIFFS);
+          saveTariffs(INITIAL_TARIFFS);
         }
       } catch (e) {
         setTariffs(INITIAL_TARIFFS);
@@ -85,7 +87,11 @@ export default function App() {
   }, [tariffs, inputs]);
 
   const addTariff = () => {
-    const newId = crypto.randomUUID();
+    // Fallback for crypto.randomUUID() in non-secure contexts (HTTP)
+    const newId = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+      ? crypto.randomUUID() 
+      : Date.now().toString(36) + Math.random().toString(36).substring(2);
+      
     const newTariff: CarSharingTariff = {
       id: newId,
       providerName: "Nuovo Gestore",

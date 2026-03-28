@@ -27,6 +27,7 @@ COPY --from=builder /app/dist ./dist
 
 # Copy the server file and other necessary files
 COPY server.ts ./
+COPY services.json ./
 
 # Expose the port the app runs on
 EXPOSE 3000
