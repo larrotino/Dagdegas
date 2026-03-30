@@ -1,20 +1,70 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" /></div>
 </div>
 
-# Run and deploy your AI Studio app
+## Introduction
+A little tool to compare the Milan's Carsharing rates for long renting car
 
-This contains everything you need to run your app locally.
+### 2. Data Persistence
+Saved rates are stored in the `services.json`file. The `docker-compose.yml` file includes a volume to map this file to your host, ensuring that data is not lost when the container restarts.
 
-View your app in AI Studio: https://ai.studio/apps/267dfb4d-61d3-4ce3-9eab-7480eafa17f7
+## Deploy Your own
+If you're interested in self-hosting your own web instance of Dagdegas, you can do so with this options:
 
-## Run Locally
+### Docker
+Pull the image from the docker hub
+```bash
+docker pull fujicicimolly/dagdegas:latest
+```
 
-**Prerequisites:**  Node.js
+Run the container
+```bash
+docker run -d -p 3000:3000 fujicicimolly/dagdegas:latest
+```
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Docker Compose
+```yml
+name: dagdegas
+services:
+  dagdegas:
+    cpu_shares: 90
+    command: []
+    deploy:
+      resources:
+        limits:
+          memory: 16612188160
+        reservations:
+          devices: []
+    environment:
+      - NODE_ENV=production
+    image: fujicicimolly/dagdegas:latest
+    labels:
+      icon: https://github.com/larrotino/Dagdegas-new/blob/main/icon_big.png?raw=true
+    ports:
+      - target: 3000
+        published: "10001"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /media/SSD-Storage/AppData/Dagdegas/Data/services.json
+        target: /app/services.json
+    devices: []
+    cap_add: []
+    network_mode: bridge
+    privileged: false
+    container_name: ""
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://github.com/larrotino/Dagdegas-new/blob/main/icon_big.png?raw=true
+  index: /
+  is_uncontrolled: false
+  port_map: "10001"
+  scheme: http
+  store_app_id: dagdegas
+  title:
+    custom: ""
+    en_us: dagdegas
+```
